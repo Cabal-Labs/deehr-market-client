@@ -46,17 +46,23 @@ export default function Login() {
 	async function login() {
 		if (!sdkRef) {
 			const socialLoginSDK = new SocialLogin();
-			const signature1 = await socialLoginSDK.whitelistUrl(
-				"http://127.0.0.1:3000/"
-			);
-			await socialLoginSDK.init({
-				chainId: ethers.utils.hexValue(ChainId.GOERLI).toString(),
-				network: "testnet",
-				whitelistUrls: {
-					"http://127.0.0.1:3000/": signature1,
-				},
-			});
-			setSdkRef(socialLoginSDK);
+			try {
+				const signature1 = await socialLoginSDK.whitelistUrl(
+					"http://127.0.0.1:3000/"
+				);
+				await socialLoginSDK.init({
+					chainId: ethers.utils.hexValue(ChainId.GOERLI).toString(),
+					network: "testnet",
+					whitelistUrls: {
+						"http://127.0.0.1:3000/": signature1,
+					},
+				});
+				console.log("social login", socialLoginSDK);
+				setSdkRef(socialLoginSDK);
+				console.log("ref", sdkRef);
+			} catch (e) {
+				console.log(e);
+			}
 		}
 		if (sdkRef && !sdkRef.provider) {
 			sdkRef.showWallet();
@@ -131,17 +137,10 @@ export default function Login() {
 		}
 	}, [interval]);
 	return (
-		<div>
-			<h1>Login</h1>
-			<Button role="button" onClick={() => login()}>
+		<div className="flex flex-col justify-start gap-8 pt-48 max-w-lg mx-auto">
+			<h1 className="text-3xl text-center">Login</h1>
+			<Button role="button" onClick={() => login()} variant={"outline"}>
 				Login with social
-			</Button>
-			<Button
-				onClick={() => {
-					console.log("importing wallet");
-					router.push("/importWallet");
-				}}>
-				Import an existing Wallet
 			</Button>
 			{loading && <p>Loading...</p>}
 			{smartAccount && (
@@ -152,8 +151,13 @@ export default function Login() {
 					</Button>
 				</>
 			)}
-			<Button onClick={() => logout()}>Log out</Button>
-			{loggedIn && <p>Logged in as {walletAddress}</p>}
+
+			{loggedIn && (
+				<>
+					<p>Logged in as {walletAddress}</p>
+					<Button onClick={() => logout()}>Log out</Button>
+				</>
+			)}
 		</div>
 	);
 }
