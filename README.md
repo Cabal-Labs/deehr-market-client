@@ -7,6 +7,6 @@ Please view our additional repositories here:
 
 Ai Cancer Docker - [https://github.com/Cabal-Labs/ai-cancer-docker] 
 
-Deehr Market Smart Contracts - link[]
+Deehr Market Smart Contracts - [https://github.com/Cabal-Labs/deehr-contracts]
 
-Lilypad Clone 
+Mini Lilypad Clone - [https://github.com/Cabal-Labs/lilypad_clone/tree/main]
